@@ -57,3 +57,4 @@ def test_text_encryption_decryption():
 if __name__ == "__main__":
     test_single_char()
     test_text_encryption_decryption()
+    print("All tests passed! :)")
