@@ -73,7 +73,7 @@ class Enigma:
         # clean up message
         message = message.strip().upper()
 
-        for key, val in self.number_repr.items():
+        for key, val in self.number_repr.items():  # change number representation
             message = message.replace(key, val)
 
         message = message.replace(" ", "X").replace("CH", "Q").replace("CK", "Q")
@@ -105,7 +105,7 @@ class Enigma:
             encrypted_text
         )
 
-    def decrypt(self, message: Message, authorization: str) -> str:
+    def decrypt(self, message: Message, authorization: str, clean_message: bool=True) -> str:
         if message.header.get("length") != len(message.text):
             raise Exception("The length of the message does not match the length inside the message header :(")
         
@@ -124,9 +124,10 @@ class Enigma:
 
         for char in text:  # decrypt message
             decrypted_text += self.encrypt_decrypt_char(char)
-            
-        decrypted_text = decrypted_text.replace("X", " ").replace("Q", "CH").replace("Q", "CK")
-        decrypted_text = decrypted_text.replace("UE", "Ü").replace("AE", "Ä").replace("OE", "Ö")
+        
+        if clean_message:  # clean up message
+            decrypted_text = decrypted_text.replace("X", " ").replace("Q", "CH").replace("Q", "CK")
+            decrypted_text = decrypted_text.replace("UE", "Ü").replace("AE", "Ä").replace("OE", "Ö")
 
         return decrypted_text
 

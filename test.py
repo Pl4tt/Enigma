@@ -20,7 +20,7 @@ def test_single_char():
 
     # TESTS
     assert enigma.encrypt_decrypt_char("K") == "P"
-    assert enigma.encrypt_decrypt_char("R") == "Y"
+    assert enigma.encrypt_decrypt_char("R") == "L"
 
 def test_text_encryption_decryption():
     # INITIAL SETUP
@@ -51,6 +51,23 @@ def test_text_encryption_decryption():
     dec_msg = enigma.decrypt(msg, "FWZ")
 
     assert dec_msg == "THIS IS A MESSAGE WRITTEN BY ME TO TEST THE ENCRYPTIONDECRYPTION ALGORITHM"
+
+    # TEST 3
+    reflector_a = Reflector(REFLECTOR_IN["A"])
+
+    rotor2 = Rotor("D", ROTOR_IN["II"])
+    rotor5 = Rotor("G", ROTOR_IN["V"])
+    
+    enigma2 = Enigma([rotor2, rotor5, rotor1], reflector_a, plug_connections28, number_repr)
+
+    raw = "We also need to test the encryption with different enigma machine settings, so here it is."
+    msg = enigma2.encrypt(raw, 1613, "ZWG", ["QGR", "OLQ"])
+    
+    assert msg.header == {'time': 1613, 'length': 93, 'check_key': ['QGR', 'QNP']}
+    
+    dec_msg = enigma2.decrypt(msg, "GWZ", clean_message=False)
+
+    assert dec_msg == "WEXALSOXNEEDXTOXTESTXTHEXENCRYPTIONXWITHXDIFFERENTXENIGMAXMAQINEXSETTINGSXXSOXHEREXITXIS"
 
     
 
